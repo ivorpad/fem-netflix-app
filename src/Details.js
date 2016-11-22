@@ -11,12 +11,14 @@ class Details extends Component {
 
     const params = this.props.params || {};
 
+    console.log(params);
+
     const {
       title,
       description,
       year,
       poster,
-      trailer
+      trailer,
     } = params;
 
     return (
@@ -26,12 +28,15 @@ class Details extends Component {
       </header>
         
         <div className="video-info">
+        <h1></h1>
         <h1 className="video-title">{title}</h1>
         <h2 className="video-year">{year}</h2>
 
-        <img src={`img/posters/${ poster }`} className="video-poster" alt=""/>
-        <p className="video-description">{description}</p>
+        <img src={`/img/posters/${poster}`} className="video-poster" alt=""/>
+          <p className="video-description">{description}</p>
         </div>
+
+        <video>{trailer}</video>
 
 
 
