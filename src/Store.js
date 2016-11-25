@@ -1,10 +1,19 @@
-import redux from 'redux';
-import reactRedux from 'react-redux';
+const redux = require('redux');
+const reactRedux = require('react-redux');
+const { shows } = require('../public/data');
+
 
 const SET_SEARCH_TERM = 'setSearchTerm';
 
 const initialState = {
-  searchTerm: ''
+  searchTerm: '',
+  shows
+}
+
+const reduceSearchTerm = (state, action) => {
+  const newState = {};
+  Object.assign(newState, state, {searchTerm: action.value});
+  return newState;
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -16,15 +25,16 @@ const rootReducer = (state = initialState, action) => {
   }
 }
 
-const reduceSearchTerm = (state, action) => {
-  const newState = {};
-  Object.assign(newState, state, {searchTerm: action.value});
-  return newState;
-}
+const store = redux.createStore(rootReducer, initialState, redux.compose(
+  typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : (f) => f
+));
 
-const store = redux.createStore(rootReducer);
-
-const mapStateToProps  = (state) => { searchTerm: state.searchTerm };
+const mapStateToProps = (state) => { 
+  return {
+    searchTerm: state.searchTerm,
+    shows: state.shows
+  }
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -36,4 +46,4 @@ const mapDispatchToProps = (dispatch) => {
 
 const connector = reactRedux.connect(mapStateToProps, mapDispatchToProps);
 
-export default { connector, store };
+module.exports = { connector, store, rootReducer };

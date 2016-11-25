@@ -1,5 +1,7 @@
 import React, { Component} from 'react';
+import Header from './Header';
 const {object} = React.PropTypes;
+const { connector } = require('./Store');
 
 class Details extends Component {
 
@@ -7,11 +9,13 @@ class Details extends Component {
     param: object
   };
 
+  assignShow(id) {
+    const showArray = this.props.shows.filter((show) => show.imdbID === id);
+    return showArray[0];
+  }
+
+
   render() {
-
-    const params = this.props.params || {};
-
-    console.log(params);
 
     const {
       title,
@@ -19,14 +23,11 @@ class Details extends Component {
       year,
       poster,
       trailer,
-    } = params;
+    } = this.assignShow(this.props.params.id);
 
     return (
       <div className="container">
-      <header className="header">
-        <h1 className="brand">svideo</h1>
-      </header>
-        
+        <Header />          
         <div className="video-info">
         <h1></h1>
         <h1 className="video-title">{title}</h1>
@@ -46,4 +47,4 @@ class Details extends Component {
 }
 
 
-export default Details;
+export default connector(Details);

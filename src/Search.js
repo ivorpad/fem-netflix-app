@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ShowCard from './ShowCard';
 const { object } = React.PropTypes;
-import { Link } from 'react-router';
+import Header from './Header';
+const { connector } = require('./Store');
 
 class Search extends Component {
 
@@ -13,23 +14,14 @@ class Search extends Component {
       }
     }
 
-    handleSearchTerm = (e) => {
-      this.setState({
-        searchTerm: e.target.value
-      })
-    }
-
     render() {
-      const data = this.props.route.data.shows
+      const data = this.props.shows
 
       const filteredTitles = data.filter((show) => `${show.title} ${show.description}`
-                             .toUpperCase().indexOf(this.state.searchTerm.toUpperCase()) >= 0);
+                             .toUpperCase().indexOf(this.props.searchTerm.toUpperCase()) >= 0);
         return (
           <div className="container">
-            <header className="header">
-              <h1 className="brand"><Link to="/"></Link></h1>
-              <input type="text" onChange={this.handleSearchTerm} className="search-input" placeholder="Search"/>
-            </header>
+            <Header showSearch />
             <div className="shows">
                { filteredTitles <= 0 ? 'No results' : filteredTitles.map((show) => (<ShowCard {...show} key={ show.imdbID } />)) }
            </div>
@@ -42,4 +34,4 @@ Search.propTypes = {
   route: object
 }
 
-export default Search;
+export default connector(Search);
